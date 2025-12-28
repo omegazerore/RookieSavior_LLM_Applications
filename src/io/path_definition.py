@@ -29,15 +29,3 @@ def get_file(relative_path: str) -> str:
     """
 
     return os.path.join(get_project_dir(), relative_path)
-
-
-def get_datafetch():
-
-    try:
-        datafetch = os.environ['TARGET_DIR']
-    except KeyError:
-        datafetch = os.path.join(get_project_dir(), 'data', 'datafetch')
-    if not os.path.isdir(datafetch):
-        os.makedirs(datafetch)
-
-    return datafetch

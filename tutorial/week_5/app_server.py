@@ -14,7 +14,7 @@ from langchain_core.messages import AIMessage
 from langchain_core.prompts.image import ImagePromptTemplate
 from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate, PromptTemplate
 
-from src.initialization import credential_init
+from initialization import credential_init
 
 
 credential_init()

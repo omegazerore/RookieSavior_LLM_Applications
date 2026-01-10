@@ -19,7 +19,7 @@ from langchain_core.output_parsers import PydanticOutputParser
 from pydantic import BaseModel, Field
 
 
-from src.initialization import credential_init
+from initialization import credential_init
 # from src.trendweek_report.deep_search import OpenAIWebSearch
 # from src.trendweek_report.examples_with_deep_search import SearchQueryAssistant, response_to_output_text
 

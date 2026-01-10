@@ -37,3 +37,4 @@ python-docx
 mlflow
 gradio
 fpdf
+sounddevice

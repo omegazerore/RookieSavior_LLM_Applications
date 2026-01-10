@@ -10,7 +10,7 @@ from openai import OpenAI
 from flask import Flask, request, Response
 from pydub import AudioSegment
 
-from src.initialization import credential_init
+from initialization import credential_init
 
 credential_init()
 client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])

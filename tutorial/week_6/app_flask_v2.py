@@ -5,7 +5,7 @@ from openai import OpenAI
 from flask import Flask, request
 from pydub import AudioSegment
 
-from src.initialization import credential_init
+from initialization import credential_init
 
 credential_init()
 client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
@@ -19,10 +19,9 @@ def upload():
 
     # transform the received raw bytes into BytesIO
     audio_file = io.BytesIO(audio_bytes)
-    audio_file = io.BytesIO(audio_bytes)
     audio_file.name = "request.wav"
     
-    whisper_output = client.audio.translations.create(
+    whisper_output = client.audio.transcriptions.create(
     model="whisper-1", 
     file=audio_file,
     response_format="text",

@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field
 embeddings = HuggingFaceEmbeddings(model_name="BAAI/bge-m3")
 
 vectorstore = FAISS.load_local(
-    "tutorial/LLM+Langchain/Week-5/warhammer 40k codex", embeddings, 
+    "tutorial/week_5/warhammer 40k codex", embeddings, 
     allow_dangerous_deserialization=True
 )
 

@@ -13,10 +13,10 @@ from langchain_openai import ChatOpenAI
 from langchain.agents import create_agent
 from langchain_core.messages import BaseMessage
 
-from src.initialization import credential_init
-from src.tutorial.week_7.tools.math import MathTool
-from src.tutorial.week_7.tools.vectorstore import CodexRetrievalTool
-from src.tutorial.week_7.tools.websearch import SearchTool
+from initialization import credential_init
+from tutorial.week_7.tools.math import MathTool
+from tutorial.week_7.tools.vectorstore import CodexRetrievalTool
+from tutorial.week_7.tools.websearch import SearchTool
 
 #嘗試單純的加入聊天紀錄
 
@@ -73,7 +73,7 @@ system_prompt = dedent("""
 
 
 
-tools = [module_math.MathTool(), module_websearch.SearchTool(), module_vectorstore.CodexRetrievalTool()]
+tools = [MathTool(), SearchTool(), CodexRetrievalTool()]
 
 credential_init()
 

@@ -5,7 +5,7 @@ from langchain_core.output_parsers import PydanticOutputParser
 from langchain.tools import BaseTool
 from pydantic import BaseModel, Field
 
-from src.initialization import credential_init
+from initialization import credential_init
 
 credential_init()
 
@@ -54,7 +54,7 @@ class SearchTool(BaseTool):
                         "search_context_size": "medium"
                         }],
                     tool_choice="auto",
-                    input=query)
+                    input=messages)
         
         return response.output_text
     
@@ -77,6 +77,6 @@ class SearchTool(BaseTool):
                         "search_context_size": "medium"
                         }],
                     tool_choice="auto",
-                    input=query)
+                    input=messages)
         
         return response.output_text

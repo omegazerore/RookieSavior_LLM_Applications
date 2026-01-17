@@ -9,7 +9,7 @@ from langchain_core.runnables import chain
 from langchain_core.prompts import PromptTemplate, ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
-from src.initialization import credential_init
+from initialization import credential_init
 
 credential_init()
 

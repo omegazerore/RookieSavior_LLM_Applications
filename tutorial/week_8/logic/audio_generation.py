@@ -9,7 +9,7 @@ from langchain_core.runnables import chain
 from openai import OpenAI
 from pydantic import BaseModel, Field
 
-from src.initialization import credential_init
+from initialization import credential_init
 
 credential_init()
 

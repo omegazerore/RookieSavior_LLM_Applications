@@ -6,8 +6,8 @@ from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
-from src.initialization import credential_init
-from src.logic.basic_logic import build_standard_chat_prompt_template
+from initialization import credential_init
+from tutorial.week_8.logic.basic_logic import build_standard_chat_prompt_template 
 
 credential_init()
 
@@ -35,7 +35,7 @@ def story_pipeline(system_template: str):
               "human": {"template": "scratch: {scratch}\nwhat happens previously: {context}",
                         "input_variable": ["scratch", "context"]}}
     
-    chat_prompt_template = module.build_standard_chat_prompt_template(input_)
+    chat_prompt_template = build_standard_chat_prompt_template(input_)
 
     model = ChatOpenAI(openai_api_key=os.environ['OPENAI_API_KEY'],
                        model_name="gpt-4o-mini", temperature=0)

@@ -12,8 +12,8 @@ from langchain_core.runnables import chain, RunnablePassthrough
 from pydantic import BaseModel, Field
 from openai import OpenAI
 
-from src.initialization import credential_init
-from src.logic.basic_logic import build_standard_chat_prompt_template
+from initialization import credential_init
+from tutorial.week_8.logic.basic_logic import build_standard_chat_prompt_template
 
 credential_init()
 # os.environ['OPENAI_API_KEY'] = "YOUR OPENAI API KEY"

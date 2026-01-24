@@ -5,18 +5,21 @@ from fastapi import FastAPI
 from langserve import add_routes
 from langchain_core.runnables import chain
 
+from tutorial.week_8.logic import story_telling as story_telling_module
+from tutorial.week_8.logic import image_generation as image_generation_module
+from tutorial.week_8.logic import audio_generation as audio_generation_module
 
-story_telling_module = importlib.import_module("tutorial.LLM+Langchain.Week-8.logic.story_telling")
+# story_telling_module = importlib.import_module("tutorial.LLM+Langchain.Week-8.logic.story_telling")
 story_telling_pipeline = story_telling_module.story_pipeline(story_telling_module.system_template)
 
-image_generation_module = importlib.import_module("tutorial.LLM+Langchain.Week-8.logic.image_generation")
+# image_generation_module = importlib.import_module("tutorial.LLM+Langchain.Week-8.logic.image_generation")
 image_create_pipeline = image_generation_module.image_create_pipeline(image_generation_module.system_template)
 image_edit_pipeline = image_generation_module.image_edit_pipeline(image_generation_module.system_template)
 # image_input = image_generation_module.Input
 image_output = image_generation_module.Output
 
 
-audio_generation_module = importlib.import_module("tutorial.LLM+Langchain.Week-8.logic.audio_generation")
+# audio_generation_module = importlib.import_module("tutorial.LLM+Langchain.Week-8.logic.audio_generation")
 tts_synthesizer = audio_generation_module.tts_synthesizer
 tts_input = audio_generation_module.Input
 

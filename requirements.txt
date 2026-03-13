@@ -38,3 +38,4 @@ mlflow
 gradio
 fpdf
 sounddevice
+langchain-qdrant

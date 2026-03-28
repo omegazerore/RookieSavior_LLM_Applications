@@ -12,7 +12,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from pydantic import BaseModel, Field
 
-from src.initialization import credential_init
+from initialization import credential_init
 
 
 credential_init()

@@ -17,7 +17,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder, Prom
 from langchain_core.runnables import chain
 from openai import OpenAI
 
-from src.initialization import credential_init
+from initialization import credential_init
 
 def build_standard_chat_prompt_template(kwargs):
 
@@ -42,13 +42,14 @@ def build_standard_chat_prompt_template(kwargs):
 
 #嘗試單純的加入聊天紀錄
 
-experiment = "Week-4"
+experiment = "week_4_chatbot"
 uri = "http://127.0.0.1:8080"
 
-# mlflow.set_tracking_uri(uri=uri)
-# mlflow.set_experiment(experiment)
+mlflow.set_tracking_uri(uri=uri)
+mlflow.set_experiment(experiment)
 
-# mlflow.langchain.autolog()
+mlflow.langchain.autolog()
+
 
 # 定義系統提示
 system_message = SystemMessage(content="You are a helpful assistant.")
@@ -95,13 +96,15 @@ def code_execution(code):
     match = re.findall(r"python\n(.*?)\n```", code, re.DOTALL)
     python_code = match[0]
     
-    lines = python_code.strip()#.split('\n')
-    # *stmts, last_line = lines
+    lines = python_code.strip()
 
-    local_vars = {}
-    exec(lines, local_vars)
+    globals_dict = {}
+    locals_dict = {}
+    
+    # ⚠️ globals 和 locals 用同一個
+    exec(lines, globals_dict, globals_dict)
 
-    return local_vars
+    return globals_dict
 
 code_generation = build_code_pipeline()
 
@@ -215,6 +218,8 @@ def follow_up_answer(aimessage):
 # **************
     
 
+# 上面都是"工具"，這裡才是Chatbot
+    
 # We need to add these input/output schemas because the current AgentExecutor
 # is lacking in schemas.
 class Input(BaseModel):

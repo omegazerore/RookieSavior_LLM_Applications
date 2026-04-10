@@ -1,5 +1,5 @@
 import os
-import io
+import io_
 import base64
 from typing import List, Optional
 
@@ -73,7 +73,7 @@ def build_standard_chat_prompt_template(kwargs) -> Runnable:
 def image_to_base64(image_path):
 
   with Image.open(image_path) as image:
-    buffered = io.BytesIO()
+    buffered = io_.BytesIO()
     image.save(buffered, format="JPEG")
     image_str = base64.b64encode(buffered.getvalue())
   return image_str.decode('utf-8')
@@ -174,7 +174,7 @@ def create_trinity_vectorstore(filename: str):
 
 if __name__ == "__main__":
 
-    from src.io.path_definition import get_datafetch
+    from src.io_.path_definition import get_datafetch
 
     dir_ = os.path.join(get_datafetch(), "pdf_folder")
 

@@ -4,7 +4,7 @@ import os
 
 from langchain_openai import ChatOpenAI
 
-from src.io.path_definition import get_file
+from src.io_.path_definition import get_file
 
 
 logger = logging.getLogger(__name__)

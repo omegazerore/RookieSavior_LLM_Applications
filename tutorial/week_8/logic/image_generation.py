@@ -6,6 +6,7 @@ from operator import itemgetter
 from typing import Dict, List
 from textwrap import dedent
 
+from langchain_ollama import ChatOllama
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import chain, RunnablePassthrough
@@ -25,7 +26,7 @@ system_template =  dedent("""\
 You are a helpful AI assistant and an art expert with extensive knowledge of illustration.
 You excel at creating Pencil and Ink Style illustrations for 6-year-old children using the GPT-Image-1 model.
 This style is characterized by detailed line work, often in black and white or with minimal color, and has a classic, timeless feel. For this task, you will be provided with a paragraph of a story, and you will generate a corresponding 
-DALLE-3 prompt which captures the storyline. The prompt should be detailed and descriptive, capturing the essence of the image."""
+Image-1 prompt which captures the storyline. The prompt should be detailed and descriptive, capturing the essence of the image."""
 )
 
 class Input(BaseModel):
@@ -59,7 +60,7 @@ def gpt_image_worker(kwargs: Dict) -> str:
     """
     
     response = client.images.generate(
-        model="gpt-image-1",
+        model="gpt-image-2",
         prompt=kwargs['nl_prompt'],
         size=kwargs.get("size", "1024x1024"),
         quality=kwargs.get('quality', 'medium'),
@@ -100,12 +101,11 @@ def gpt_image_render(kwargs) -> str:
     print(f"input_image_size={len(image)}")
     
     response = client.images.edit(
-        model="gpt-image-1",
+        model="gpt-image-2",
         image=image,
         prompt=kwargs['nl_prompt'],
         size=kwargs.get("size", "1024x1024"),
         quality=kwargs.get('quality', 'medium'),
-        input_fidelity="high",
         n=1)
 
     image_base64 = response.data[0].b64_json
@@ -163,9 +163,11 @@ def image_create_pipeline(system_template: str):
                         "input_variable": ["story"]}}
     
     chat_prompt_template = build_standard_chat_prompt_template(input_)
-
-    model = ChatOpenAI(openai_api_key=os.environ['OPENAI_API_KEY'],
-                       model_name="gpt-4o-mini", temperature=0)
+    
+    model = ChatOllama(model='gpt-oss:120b-cloud',
+                      base_url='https://ollama.com',
+                      reasoning=True,
+                      temperature=0)
     
     nl_prompt_generation_chain = chat_prompt_template | model | StrOutputParser()     
     
@@ -198,8 +200,10 @@ def image_edit_pipeline(system_template: str):
     
     chat_prompt_template = build_standard_chat_prompt_template(input_)
 
-    model = ChatOpenAI(openai_api_key=os.environ['OPENAI_API_KEY'],
-                       model_name="gpt-4o-mini", temperature=0)
+    model = ChatOllama(model='gpt-oss:120b-cloud',
+                      base_url='https://ollama.com',
+                      reasoning=True,
+                      temperature=0)
     
     nl_prompt_generation_chain = chat_prompt_template | model | StrOutputParser()     
     

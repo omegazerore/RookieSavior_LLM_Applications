@@ -2,9 +2,7 @@ import configparser
 import logging
 import os
 
-from langchain_openai import ChatOpenAI
-
-from src.io.path_definition import get_file
+from src.path.path_definition import get_file
 
 
 logger = logging.getLogger(__name__)

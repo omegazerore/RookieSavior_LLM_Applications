@@ -15,6 +15,7 @@ from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from initialization import credential_init
 from tutorial.week_4.multifile_append_1 import build_standard_chat_prompt_template
 from tutorial.week_4.multifile_append_2 import Output
+from tutorial.week_4.multifile_append_3 import my_number
 
 credential_init()
 
@@ -121,6 +122,8 @@ class LLMChainModel(mlflow.pyfunc.PythonModel):
         output = self.pipeline.invoke({"article": model_input.loc[0]['article'],
                                        "title": model_input.loc[0]['title']})
 
+        print(f"my_number: {my_number}")
+        
         self.mlflow_cb.flush_tracker()
         
         return output

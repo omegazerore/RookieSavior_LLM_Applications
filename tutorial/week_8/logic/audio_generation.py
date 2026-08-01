@@ -44,7 +44,7 @@ def tts_synthesizer(kwargs):
     response = client.audio.speech.create(
     model=model,
     voice=voice,
-    input=kwargs['input'],
+    input=kwargs['audio_input'],
     instructions=instructions)
 
     # Get audio bytes

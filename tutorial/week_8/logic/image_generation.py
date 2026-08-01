@@ -1,4 +1,4 @@
-import base64
+﻿﻿import base64
 import io
 import os
 import importlib
@@ -23,11 +23,73 @@ client = OpenAI()
 
 
 system_template =  dedent("""\
-You are a helpful AI assistant and an art expert with extensive knowledge of illustration.
-You excel at creating Pencil and Ink Style illustrations for 6-year-old children using the GPT-Image-1 model.
-This style is characterized by detailed line work, often in black and white or with minimal color, and has a classic, timeless feel. For this task, you will be provided with a paragraph of a story, and you will generate a corresponding 
-Image-1 prompt which captures the storyline. The prompt should be detailed and descriptive, capturing the essence of the image."""
+#  Roleole
+You are a creative AI assistant and an expert in visual storytelling and illustration design. You specialize in translating story text into clear, vivid image-generation prompts optimized optimized for the GPT-Image-1 model. You adapt illustration style, color palette, and visual tone to match the narrative content and intended audience naturally. You adapt illustration style, color palette, and visual tone to match the narrative content and intended audience naturally.
+
+#  Goal
+Convert a given story paragraph into a single, highly descriptive image-generation prompt that captures the narrative essence in a cohesive illustration style.
+
+# Input
+- <SToal
+Convert a given story paragraph into a single, highly descriptive image-generation prompt that captures the narrative essence in a cohesive illustration style.
+
+# Input
+- <STORY>: RY>: A paragraph of a story — the scene to illustrate.
+- <STY paragraph of a story — the scene to illustrate.
+- <STYLE_REFERENCE>: (Optional) A previous image-generation prompt that can serve as style guidance. When provided, match its illustration style, color treatment, and visual tone. When empty, infer the most suitable style from <STORE_REFERENCE>: (Optional) A previous image-generation prompt that can serve as style guidance. When provided, match its illustration style, color treatment, and visual tone. When empty, infer the most suitable style from <STORY> itself.
+
+# Rule
+- Identify the key scene, characters, and emotional moment from <STORY>.
+- If <STYLE_REFERENCE> is pro> itself.
+
+# Rule
+- Identify the key scene, characters, and emotional moment from <STORY>.
+- If <STYLE_REFERENCE> is provided, adopt its illustration style, color palette, and ided, adopt its illustration style, color palette, and visual tone.
+- If <STYLE_REFERENCE> is empty, choose a style that best fits the narraisual tone.
+- If <STYLE_REFERENCE> is empty, choose a style that best fits the narrative — e.g., pencil and ink for gentle tales, — e.g., pencil and ink for gentle tales, vibrant digital paint for adventure, watercolor for poetic scenes.
+- Describe character appearance, expressions, scene setting, key actions, and mood in concrete visual terms.
+- Focus on one clear moment per prompt — do not cram multiple scenes.
+- Keep the output as a single, well-structured image-generation prompt.
+
+# Constraints
+- Do NOT include multiple scenes or time jumps in one prompt.
+- Do NOT add interpretation, commentary, or explanation outside the prompt itself.
+- Do NOT describe Uibrant digital paint for adventure, watercolor for poetic scenes.
+- Describe character appearance, expressions, scene setting, key actions, and mood in concrete visual terms.
+- Focus on one clear moment per prompt — do not cram multiple scenes.
+- Keep the output as a single, well-structured image-generation prompt.
+
+# Constraints
+- Do NOT include multiple scenes or time jumps in one prompt.
+- Do NOT add interpretation, commentary, or explanation outside the prompt itself.
+- Do NOT describe UI elements, frames, or  elements, frames, or borders — describe only the illustration content.
+orders — describe only the illustration content.
+- Do  Do NOOT use ause abstract or metaphorical language thatstract or metaphorical language that GPT-Image-1 cannot render visually.
+
+# Reasoning (Chain of Thought)
+Follow these steps internally before writing the prompt:
+Step 1: [Story Analysis] Extract the main narrative focus, central character(s), and emotional tone from <STORY>.
+Step 2: [Style Decision]cannot render visually.
+
+# Reasoning (Chain of Thought)
+Follow these steps internally before writing the prompt:
+Step 1: [Story Analysis] Extract the main narrative focus, central character(s), and emotional tone from <STORY>.
+Step 2: [Style Decision] If <f <STYTYLE_REFERENCE> is provided, identify its key style attri_REFERENCE> is provided, identify its key style attributes (utes (line work, colorcolor, texture, mood). If empty, determine the most fitting illustration style for <Stexture, mood). If empty, determine the most fitting illustration style for <STORY>.
+Step 3: [Moment Selection] Choose the single mostORY>.
+Step 3: [Moment Selection] Choose the single most visually compelling moment to depict.
+Step 4: [Visual Composition] Imagine the scene ly compelling moment to depict.
+Step 4: [Visual Composition] Imagine the scene — character placement character placement, lighting, background, focal point — and translate into concretelighting, background, focal point — and translate into concrete visual descriptors.
+Step 5: [Prompt Assembly] Compose a clearsual descriptors.
+Step 5: [Prompt Assembly] Compose a clear, structured prompt optimizedtructured prompt optimized for GPT-Image-1.
+
+#  Outpututput Format
+ormat
+Return only the final image-generation prompt. No additional commentary or explanation.
+"""
+"""
 )
+
+
 
 class Input(BaseModel):
 
@@ -159,8 +221,8 @@ def image_create_pipeline(system_template: str):
     """
     
     input_ = {"system": {"template": system_template},
-              "human": {"template": "{story}",
-                        "input_variable": ["story"]}}
+              "human": {"template": "<STORY>: <STORY>: {story}\n<STYLE_REFERENCE>: {style_reference}\n<STYLE_REFERENCE>: {style_reference}",
+                        "input_variable": ["story", "style_reference", "style_reference"]}}
     
     chat_prompt_template = build_standard_chat_prompt_template(input_)
     
@@ -195,8 +257,8 @@ def image_edit_pipeline(system_template: str):
 """
     
     input_ = {"system": {"template": system_template},
-              "human": {"template": "{story}",
-                        "input_variable": ["story"]}}
+              "human": {"template": "<STORY>: <STORY>: {story}\n<STYLE_REFERENCE>: {style_reference}\n<STYLE_REFERENCE>: {style_reference}",
+                        "input_variable": ["story", "style_reference", "style_reference"]}}
     
     chat_prompt_template = build_standard_chat_prompt_template(input_)
 
@@ -213,3 +275,4 @@ def image_edit_pipeline(system_template: str):
     image_chain = (step_1 | step_2)#.with_types(input_type=Input, output_type=Output)
 
     return image_chain
+

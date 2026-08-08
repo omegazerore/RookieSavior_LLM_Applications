@@ -26,7 +26,7 @@ opencv-python
 pypdf
 lark
 rank_bm25
-httpx==0.27.2
+httpx>=0.28.0
 sentencepiece
 pillow
 uvicorn
@@ -39,5 +39,6 @@ fpdf
 sounddevice
 pdf2image
 jieba
+litellm==1.95.0
 arize-phoenix
 openinference-instrumentation-langchain

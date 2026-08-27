@@ -12,6 +12,7 @@ import pandas as pd
 from fastapi import FastAPI
 from langserve import add_routes
 from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
 from langchain_core.runnables import RunnablePassthrough, chain
 from langchain_core.prompts.image import ImagePromptTemplate
 from langchain_core.prompts import PromptTemplate, HumanMessagePromptTemplate, ChatPromptTemplate, SystemMessagePromptTemplate
@@ -29,9 +30,12 @@ logger = logging.getLogger(__name__)
 
 credential_init()
 
-model = ChatOpenAI(openai_api_key=os.environ['OPENAI_API_KEY'],
-                   model_name="gpt-4o-mini", temperature=0)
+# model = ChatOpenAI(openai_api_key=os.environ['OPENAI_API_KEY'],
+#                    model_name="gpt-4o-mini", temperature=0)
 
+model = ChatOllama(model="kimi-k2.6:cloud",
+                   base_url='https://ollama.com',
+                   name='main', temperature=0)
 
 def build_standard_chat_prompt_template(kwargs):
     messages = []

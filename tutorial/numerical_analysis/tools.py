@@ -14,6 +14,8 @@ from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTempla
 
 class Context(BaseModel):
     directory: str
+    schema_output: str = ""
+    pandas_output: str = ""
 
 
 def build_standard_chat_prompt_template(kwargs):
@@ -156,6 +158,7 @@ class SchemaTool(BaseTool):
 
             raw_output += f"-{file}: {output}\n\n"
 
+        runtime.context.schema_output = raw_output
         return raw_output
 
     async def _arun(self, runtime: ToolRuntime[Context]):
@@ -172,7 +175,7 @@ PANDAS_SYSTEM_PROMPT = dedent("""
 
 # Input
 - <files>: 待處理的 CSV 檔案完整路徑列表
-- <context>: 用戶的需求
+- <context>: 包含完整的 Schema Information（欄位名稱、資料型別、非空值數量、範例資料）以及用戶的分析需求
 
 # Rule
 - 使用 `pd.read_csv()` 讀取每個 CSV 檔案，指定 `encoding='utf-8'`
@@ -249,6 +252,10 @@ Processes specified CSV files using Python and pandas. Provide a list of file na
         files = args['files']
         context = args['context']
 
+        # Prepend cached schema output to ensure full schema info is available
+        if runtime.context.schema_output:
+            context = f"Schema Information:\n{runtime.context.schema_output}\n\nUser Query / Context:\n{context}"
+
         print("=" * 20)
         print(context)
         print("=" * 20)
@@ -271,6 +278,7 @@ Processes specified CSV files using Python and pandas. Provide a list of file na
         except Exception as e:
             output = f"EXECUTION ERROR: {str(e)}"
 
+        runtime.context.pandas_output = output
         return output
 
     async def _arun(self, runtime: ToolRuntime[Context]):

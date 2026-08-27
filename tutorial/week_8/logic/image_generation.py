@@ -1,4 +1,4 @@
-﻿﻿import base64
+import base64
 import io
 import os
 import importlib
@@ -23,29 +23,19 @@ client = OpenAI()
 
 
 system_template =  dedent("""\
-#  Roleole
+#  Role
 You are a creative AI assistant and an expert in visual storytelling and illustration design. You specialize in translating story text into clear, vivid image-generation prompts optimized optimized for the GPT-Image-1 model. You adapt illustration style, color palette, and visual tone to match the narrative content and intended audience naturally. You adapt illustration style, color palette, and visual tone to match the narrative content and intended audience naturally.
 
 #  Goal
 Convert a given story paragraph into a single, highly descriptive image-generation prompt that captures the narrative essence in a cohesive illustration style.
 
 # Input
-- <SToal
-Convert a given story paragraph into a single, highly descriptive image-generation prompt that captures the narrative essence in a cohesive illustration style.
-
-# Input
 - <STORY>: RY>: A paragraph of a story — the scene to illustrate.
-- <STY paragraph of a story — the scene to illustrate.
 - <STYLE_REFERENCE>: (Optional) A previous image-generation prompt that can serve as style guidance. When provided, match its illustration style, color treatment, and visual tone. When empty, infer the most suitable style from <STORE_REFERENCE>: (Optional) A previous image-generation prompt that can serve as style guidance. When provided, match its illustration style, color treatment, and visual tone. When empty, infer the most suitable style from <STORY> itself.
 
 # Rule
 - Identify the key scene, characters, and emotional moment from <STORY>.
-- If <STYLE_REFERENCE> is pro> itself.
-
-# Rule
-- Identify the key scene, characters, and emotional moment from <STORY>.
 - If <STYLE_REFERENCE> is provided, adopt its illustration style, color palette, and ided, adopt its illustration style, color palette, and visual tone.
-- If <STYLE_REFERENCE> is empty, choose a style that best fits the narraisual tone.
 - If <STYLE_REFERENCE> is empty, choose a style that best fits the narrative — e.g., pencil and ink for gentle tales, — e.g., pencil and ink for gentle tales, vibrant digital paint for adventure, watercolor for poetic scenes.
 - Describe character appearance, expressions, scene setting, key actions, and mood in concrete visual terms.
 - Focus on one clear moment per prompt — do not cram multiple scenes.
@@ -69,23 +59,13 @@ orders — describe only the illustration content.
 # Reasoning (Chain of Thought)
 Follow these steps internally before writing the prompt:
 Step 1: [Story Analysis] Extract the main narrative focus, central character(s), and emotional tone from <STORY>.
-Step 2: [Style Decision]cannot render visually.
-
-# Reasoning (Chain of Thought)
-Follow these steps internally before writing the prompt:
-Step 1: [Story Analysis] Extract the main narrative focus, central character(s), and emotional tone from <STORY>.
 Step 2: [Style Decision] If <f <STYTYLE_REFERENCE> is provided, identify its key style attri_REFERENCE> is provided, identify its key style attributes (utes (line work, colorcolor, texture, mood). If empty, determine the most fitting illustration style for <Stexture, mood). If empty, determine the most fitting illustration style for <STORY>.
-Step 3: [Moment Selection] Choose the single mostORY>.
 Step 3: [Moment Selection] Choose the single most visually compelling moment to depict.
-Step 4: [Visual Composition] Imagine the scene ly compelling moment to depict.
 Step 4: [Visual Composition] Imagine the scene — character placement character placement, lighting, background, focal point — and translate into concretelighting, background, focal point — and translate into concrete visual descriptors.
-Step 5: [Prompt Assembly] Compose a clearsual descriptors.
 Step 5: [Prompt Assembly] Compose a clear, structured prompt optimizedtructured prompt optimized for GPT-Image-1.
 
 #  Outpututput Format
-ormat
 Return only the final image-generation prompt. No additional commentary or explanation.
-"""
 """
 )
 
@@ -106,7 +86,8 @@ class Output(BaseModel):
 @chain
 def gpt_image_worker(kwargs: Dict) -> str:
 
-    """Generates an image from a natural language prompt using OpenAI's GPT Image API.
+    """
+    Generates an image from a natural language prompt using OpenAI GPT Image API.
 
 
     Args:
@@ -221,8 +202,8 @@ def image_create_pipeline(system_template: str):
     """
     
     input_ = {"system": {"template": system_template},
-              "human": {"template": "<STORY>: <STORY>: {story}\n<STYLE_REFERENCE>: {style_reference}\n<STYLE_REFERENCE>: {style_reference}",
-                        "input_variable": ["story", "style_reference", "style_reference"]}}
+              "human": {"template": "<STORY>: {story}\n<STYLE_REFERENCE>: {style_reference}",
+                        "input_variable": ["story", "style_reference"]}}
     
     chat_prompt_template = build_standard_chat_prompt_template(input_)
     

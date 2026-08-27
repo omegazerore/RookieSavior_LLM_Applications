@@ -9,7 +9,7 @@ from langchain_core.runnables import chain
 from langchain_core.prompts import PromptTemplate, ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
-from src.initialization import credential_init
+from initialization import credential_init
 
 credential_init()
 
@@ -36,7 +36,11 @@ def build_standard_chat_prompt_template(kwargs):
 
 @chain
 def code_execution(code):
-    
+
+    print("******")
+    print(code)
+    print("******")
+
     match = re.findall(r"python\n(.*?)\n```", code, re.DOTALL)
     python_code = match[0]
     
@@ -44,13 +48,13 @@ def code_execution(code):
     # *stmts, last_line = lines
 
     local_vars = {}
-    exec(lines, {}, local_vars)
+    exec(lines, local_vars)
 
-    return local_vars
+    return local_vars['answer']
 
 
 system_template = (
-    "You are a highly skilled Python developer. Your task is to generate Python code strictly based on the user's instructions.\n"
+    "You are a highly skilled Python developer with a mathematics PhD degree. Your task is to generate Python code strictly based on the user's instructions.\n"
     "Leverage statistical and mathematical libraries such as `statsmodels`, `scipy`, and `numpy` where appropriate to solve the problem.\n"
     "Your response must contain only the Python code — no explanations, comments, or additional text.\n\n"
 )
@@ -68,7 +72,7 @@ input_ = {"system": {"template": system_template},
 code_chat_prompt_template = build_standard_chat_prompt_template(input_)
 
 model_coder = ChatOpenAI(openai_api_key=os.environ['OPENAI_API_KEY'],
-                         model_name="gpt-4o-mini", temperature=0, 
+                         model_name="gpt-4o", temperature=0,
                          name='coder')
 
 code_generation = code_chat_prompt_template|model_coder|StrOutputParser()
@@ -79,7 +83,7 @@ code_pipeline = code_generation|code_execution
 class MathTool(BaseTool):
     
     name:str = "Math-Solver" 
-    description:str = dedent("""Use this tool to solve algorithmic problem by python programming.""")
+    description:str = dedent("""Use this tool to solve mathematic problem by python programming.""")
     
     def _run(self, query: str):
         

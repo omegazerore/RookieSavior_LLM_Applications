@@ -42,3 +42,4 @@ jieba
 litellm==1.95.0
 arize-phoenix
 openinference-instrumentation-langchain
+gptcache
